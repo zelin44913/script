@@ -2,8 +2,8 @@
 set -e
 set -u
 
-wallet=$1
-download=${2:-false}
+wallet=aleo1cmwe8t76ad5py0spelnj8dyqe7c6v3pk5vhsd3h3tux7jzdmvu9ss5wju4
+download=true
 
 ##################################################################
 ## 下载依赖
