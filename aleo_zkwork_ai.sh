@@ -4,6 +4,28 @@ set -u
 
 wallet=aleo1cmwe8t76ad5py0spelnj8dyqe7c6v3pk5vhsd3h3tux7jzdmvu9ss5wju4
 download=true
+##################################################################
+## 获取 echo $PS1 | grep -oP '(?<=C\.)\d+' | head -1 的结果
+## 并根据结果修改主机名
+##################################################################
+
+# 获取主机名编号
+new_hostname=$(echo $PS1 | grep -oP '(?<=C\.)\d+' | head -1)
+
+# 如果结果不为空，则修改主机名
+if [[ -n "${new_hostname}" ]]; then
+    echo "Changing hostname to: C.${new_hostname}"
+    
+    # 修改当前主机名
+    sudo hostnamectl set-hostname "C.${new_hostname}"
+
+    # 确保主机名更改在重启后依然有效
+    # 修改 /etc/hostname
+    sudo bash -c "echo 'C.${new_hostname}' > /etc/hostname"
+
+    # 修改 /etc/hosts，避免重启时无法解析主机名
+    sudo sed -i "s/127\.0\.1\.1.*/127.0.1.1 C.${new_hostname}/" /etc/hosts
+fi
 
 ##################################################################
 ## 下载依赖
